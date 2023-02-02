@@ -7,13 +7,10 @@ from __future__ import annotations
 
 import functools
 import json
-import platform
+import sys
 import tarfile
 from configparser import ConfigParser
 from pathlib import Path
-
-if platform.system().lower() == "windows":
-    import winreg
 
 import attrs
 from cattrs import Converter
@@ -43,7 +40,7 @@ FEED_URL = "https://zealusercontributions.vercel.app/api/docsets/{name}.xml"
 @functools.cache
 def docset_install_path() -> Path:
     """Get the path where Docsets are installed to."""
-    if platform.system().lower() == "windows":
+    if sys.platform == "win32":
         try:
             install_path = _windows_docset_install_path()
         except OSError as exc:
@@ -97,6 +94,12 @@ def _linux_docset_install_path() -> Path:
 
 def _windows_docset_install_path() -> Path:
     """Get the docset path from the Zeal registry entries."""
+    # gatekeeper so that mypy doesn't choke on `winreg` in Linux
+    if sys.platform != "win32":
+        raise RuntimeError("Incorrect platform for Windows registry")
+
+    import winreg
+
     with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"SOFTWARE\Zeal\Zeal\docsets") as key:
         docset_path = winreg.QueryValueEx(key, "path")[0]
     return Path(docset_path)
