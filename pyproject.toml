@@ -27,7 +27,6 @@ dependencies = [
   "platformdirs",
   "requests",
   "rich",
-  "yarl",
 ]
 dynamic = ["version"]
 
@@ -48,7 +47,7 @@ dependencies = [
   "pre-commit",
   "pytest",
   "pytest-cov",
-  "ruff",
+  "ruff == 0.0.240",
   "types-requests",
 ]
 [tool.hatch.envs.default.scripts]
