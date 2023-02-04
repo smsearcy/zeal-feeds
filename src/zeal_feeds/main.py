@@ -52,12 +52,21 @@ def main():
 def search(args) -> str | None:
     """Search for matching docsets."""
     docset_data = _load_docset_index(args.url)
+    fallback = False
 
     search_text = args.text
+
     matches = sorted(docset_data.search(search_text))
     if not matches:
+        matches = sorted(docset_data.fallback_search(search_text))
+        fallback = True
+    if not matches:
         return "No matching docsets found"
-    print("Matching docsets:")
+
+    if fallback:
+        print("No exact matches, did you mean:")
+    else:
+        print("Matching docsets:")
     for docset in matches:
         print(docset)
     return None

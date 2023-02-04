@@ -80,6 +80,13 @@ class DocSetCollection(Mapping[str, DocSet]):
                 yield docset
                 continue
 
+    def fallback_search(self, text: str) -> Iterator[DocSet]:
+        """Yield packages that approximately match the provided name."""
+        text = self._normalize(text)
+        for id_, docset in self._docsets.items():
+            if _edit_distance(text, id_) <= 2:
+                yield docset
+
     @staticmethod
     def _normalize(value: str) -> str:
         return value.lower()
@@ -160,3 +167,29 @@ def _parse_docset_index(index_json: dict) -> Iterator[DocSet]:
 
     for docset in index_json:
         yield converter.structure(docset, DocSet)
+
+
+def _edit_distance(pattern: str, target: str) -> int:
+    len_a, len_b = len(pattern), len(target)
+    d = _edit_distance_matrix(len_a, len_b)
+    for i, pattern_char in enumerate(pattern, start=1):
+        for j, target_char in enumerate(target, start=1):
+            cost = int(pattern_char != target_char)
+            d[i][j] = min(
+                d[i - 1][j] + 1,  # deletion
+                d[i][j - 1] + 1,  # insertion
+                d[i - 1][j - 1] + cost,  # substitution
+            )
+    return d[len_a][len_b]
+
+
+def _edit_distance_matrix(pattern_length: int, target_length: int) -> list[list[int]]:
+    rows, cols = pattern_length + 1, target_length + 1
+    d = []
+    for _ in range(rows):
+        d.append([0] * cols)
+    for i in range(rows):
+        d[i][0] = i
+    for j in range(cols):
+        d[0][j] = j
+    return d
