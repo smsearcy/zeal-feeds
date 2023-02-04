@@ -1,4 +1,4 @@
-name: test
+name: Tests
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
   FORCE_COLOR: "1"
 
 jobs:
-  pre-commit:
+  lint:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -23,10 +23,10 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    - name: Install pre-commit
-      run: pip install pre-commit
-    - name: Run pre-commit
-      run: pre-commit run --all-files
+    - name: Install Hatch
+      run: pip install hatch --disable-pip-version-check
+    - name: Run linters
+      run: hatch run lint
 
   run:
     name: Python ${{ matrix.python-version }} on ${{ startsWith(matrix.os, 'macos-') && 'macOS' || startsWith(matrix.os, 'windows-') && 'Windows' || 'Linux' }}
@@ -46,9 +46,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install Hatch
-      run: pip install --upgrade hatch
+      run: pip install hatch --disable-pip-version-check
 
     - name: Run tests
-      run: |
-        hatch run lint
-        hatch run cov
+      run: hatch run cov
