@@ -16,6 +16,6 @@ Categories:
 ### Security
 -->
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2023-02-04
 
 Initial release of *zeal-feeds* with basic `install` and `search` functionality.
