@@ -103,3 +103,17 @@ def test_docset_collection_get(item, expected):
 def test_docset_collection_search(search, expected):
     """Verify docset search functionality."""
     assert sorted(COLLECTION.search(search)) == sorted(expected)
+
+
+@pytest.mark.parametrize(
+    ("search", "expected"),
+    [
+        ("food", [DOCSETS["foo"]]),
+        ("foobra", [DOCSETS["foobar"]]),
+        ("acec", [DOCSETS["acme"]]),
+        ("amecs", []),
+    ],
+)
+def test_docset_collection_fuzzy_search(search, expected):
+    """Verify docset search functionality."""
+    assert sorted(COLLECTION.fallback_search(search)) == sorted(expected)
