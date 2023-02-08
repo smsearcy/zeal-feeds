@@ -18,6 +18,10 @@ Categories:
 
 ## 0.2.0 - Unreleased
 
+### Added
+
+* Fuzzy search fallback if exact match does not find anything. [#2](https://github.com/smsearcy/zeal-feeds/pull/2)
+
 ## 0.1.0 - 2023-02-04
 
 Initial release of *zeal-feeds* with basic `install` and `search` functionality.
