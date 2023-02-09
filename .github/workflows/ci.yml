@@ -1,4 +1,4 @@
-name: Tests
+name: CI
 
 on:
   push:
@@ -11,11 +11,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PYTHONUNBUFFERED: "1"
   FORCE_COLOR: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
 
 jobs:
   lint:
+    name: Linters
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -24,11 +26,11 @@ jobs:
       with:
         python-version: '3.11'
     - name: Install Hatch
-      run: pip install hatch --disable-pip-version-check
+      run: pip install hatch
     - name: Run linters
       run: hatch run lint
 
-  run:
+  tests:
     name: Python ${{ matrix.python-version }} on ${{ startsWith(matrix.os, 'macos-') && 'macOS' || startsWith(matrix.os, 'windows-') && 'Windows' || 'Linux' }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -46,7 +48,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install Hatch
-      run: pip install hatch --disable-pip-version-check
+      run: pip install hatch
 
     - name: Run tests
       run: hatch run cov

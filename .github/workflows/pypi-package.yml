@@ -1,0 +1,57 @@
+name: Build PyPI Package (and upload releases)
+
+on:
+  push:
+    branches: [main]
+    tags: ["*"]
+  pull_request:
+    branches: [main]
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+jobs:
+  build-package:
+    name: Build package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Hatch
+        run: pip install hatch --disable-pip-version-check
+
+      - name:
+        run: hatch build
+
+      - name: Save package artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Packages
+          path: dist
+
+  release-pypi:
+    name: Publish released package to pypi.org
+    if: github.event.action == 'published'
+    runs-on: ubuntu-latest
+    needs: build-package
+
+    steps:
+      - name: Download built package artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: Packages
+          path: dist
+
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI.API_TOKEN }}
