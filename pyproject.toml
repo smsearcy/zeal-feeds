@@ -44,6 +44,14 @@ zeal-feeds = "zeal_feeds.main:main"
 [tool.hatch.version]
 path = "src/zeal_feeds/__about__.py"
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zeal_feeds"]
+
 [tool.hatch.envs.default]
 dependencies = [
   "mypy",
