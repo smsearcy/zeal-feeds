@@ -16,6 +16,10 @@ Categories:
 ### Security
 -->
 
+## 0.2.1 - 2023-02-10
+
+Packaging release to fix broken link to CI status in README.
+
 ## 0.2.0 - 2023-02-09
 
 ### Added
