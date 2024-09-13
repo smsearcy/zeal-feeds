@@ -6,6 +6,7 @@
 This module handles modules parsing and end-user interaction.
 
 """
+
 from __future__ import annotations
 
 import argparse

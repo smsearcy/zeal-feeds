@@ -20,11 +20,22 @@ as an alternative to looking up the URL of the XML feed and pasting in the *Add 
 
 ## Installation
 
-The recommended way to install *zeal-feeds* is via [pipx](https://pypi.org/project/pipx/),
+The recommended way to install *zeal-feeds* is via
+[uv](https://github.com/astral-sh/uv)
+or [pipx](https://pypi.org/project/pipx/),
 to provide an isolated installation.
 
 ```console
+# install with uv
+$ uv tool install zeal-feeds
+$ zeal-feeds --help
+
+# run without "installing"
+$ uvx zeal-feeds
+
+# install with pipx
 $ pipx install zeal-feeds
+$ zeal-feeds --help
 ```
 
 Alternatively, *zeal-feeds* can be installed via `pip`,
@@ -33,7 +44,7 @@ either for the current user or into the current Python virtual environment.
 > **Warning**
 >
 > This package will install several dependencies into the current environment.
-> Consider using `pipx` to avoid dependency conflicts.
+> Consider using `uv` or `pipx` to avoid dependency conflicts.
 
 ```console
 $ pip install --user zeal-feeds
@@ -73,7 +84,8 @@ If a docset is already installed then it will be skipped.
 ## Acknowledgements
 
 This project was inspired by [zeal-user-contrib](https://github.com/jmerle/zeal-user-contrib),
-but the apparent lack of an `npm` equivalent of `pipx` for isolated installations prompted writing a Python version.
+but the apparent lack of an `npm` equivalent of `pipx` for isolated installations prompted writing a Python version
+(I didn't know about `npx` at the time).
 
 This [article](https://hynek.me/articles/productive-fruit-fly-programmer/) by Hynek Schlawack for introducing Dash/Zeal.
 
@@ -83,8 +95,36 @@ https://zealusercontributions.vercel.app/ for providing the docset API with XML 
 
 Please open an issue or pull request on GitHub if you have questions, ideas, or issues.
 
-*zeal-feeds* uses [hatch](https://hatch.pypa.io/).
-Run `hatch run lint` to run checks (Black, Ruff, and mypy) and `hatch run test:pytest` to run unit tests.
+For local development,
+[fork and clone](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+the Git repository.
+
+To develop locally with [uv](https://github.com/astral-sh/uv)
+(with the advantage of being faster and less manual management of the virtualenv):
+
+```console
+$ uv sync
+
+# run test suite
+$ just
+
+# run zeal-feeds
+$ uv run zeal-feeds
+```
+
+Or you may use `pip`:
+
+```console
+$ python -m venv .venv
+$ source .venv/bin/activate
+(venv) $ pip install -e .[dev]
+
+# run tests
+(venv) $ tox
+
+# run zeal-feeds
+(venv) $ zeal-feeds
+```
 
 ## License
 

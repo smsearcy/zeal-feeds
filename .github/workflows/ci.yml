@@ -16,6 +16,26 @@ env:
   PIP_NO_PYTHON_VERSION_WARNING: "1"
 
 jobs:
+  pre-commit:
+    name: pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@2
+        with:
+          version: "0.4.10"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Hatch
+        run: pip install hatch
+      - name: Run linters
+        run: hatch run lint
+
   lint:
     name: Linters
     runs-on: ubuntu-latest
