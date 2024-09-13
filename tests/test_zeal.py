@@ -1,11 +1,11 @@
 """Test functionality in the `zeal` module."""
 
-from zeal_feeds.zeal import Zeal
 from zeal_feeds.user_contrib import DocSet, DocSetAuthor
+from zeal_feeds.zeal import Zeal
 
 
-def test_docset_install(data_folder, tmp_path) -> None:
-
+def test_docset_install_wrong_folder_name(data_folder, tmp_path) -> None:
+    """Verify that a tarball with the "wrong" folder name installs correctly."""
     docset_name = "wxPython"
     docset_archive = "wxPython.tgz"
 

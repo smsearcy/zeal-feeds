@@ -5,9 +5,7 @@
 
 from __future__ import annotations
 
-import functools
 import json
-import re
 import sys
 import tarfile
 from collections.abc import Iterator
@@ -37,6 +35,8 @@ class MetaData:
 
 @attrs.define
 class Zeal:
+    """Class for interacting with the installed Zeal application."""
+
     docset_path: Path
 
     @classmethod

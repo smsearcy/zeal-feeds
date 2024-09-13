@@ -16,9 +16,17 @@ Categories:
 ### Security
 -->
 
+## 0.2.2 - 2024-09-12
+
+### Fixed
+
+* Fix issue installing wxPython Docset due folder name with version. [#7](https://github.com/smsearcy/zeal-feeds/issues/7)
+
 ## 0.2.1 - 2023-02-10
 
-Packaging release to fix broken link to CI status in README.
+### Fixed
+
+* Packaging release to fix broken link to CI status in README.
 
 ## 0.2.0 - 2023-02-09
 
