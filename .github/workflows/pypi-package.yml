@@ -24,16 +24,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install Hatch
         run: pip install hatch --disable-pip-version-check
 
-      - name:
+      - name: Build package
         run: hatch build
 
       - name: Save package artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        # this might have issues with v4 (duplicate uploads?)
         with:
           name: Packages
           path: dist
@@ -46,7 +47,7 @@ jobs:
 
     steps:
       - name: Download built package artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Packages
           path: dist
