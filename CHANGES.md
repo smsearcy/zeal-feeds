@@ -16,6 +16,13 @@ Categories:
 ### Security
 -->
 
+## 0.2.3 - 2024-09-13
+
+### Fixed
+
+* Resolving packaging issues and tagging mistake
+
+
 ## 0.2.2 - 2024-09-12
 
 ### Fixed
