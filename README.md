@@ -83,8 +83,40 @@ https://zealusercontributions.vercel.app/ for providing the docset API with XML 
 
 Please open an issue or pull request on GitHub if you have questions, ideas, or issues.
 
-*zeal-feeds* uses [hatch](https://hatch.pypa.io/).
-Run `hatch run lint` to run checks (Black, Ruff, and mypy) and `hatch run test:pytest` to run unit tests.
+For local development,
+[fork and clone](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+the Git repository.
+
+To develop locally with [uv](https://github.com/astral-sh/uv)
+(with the advantage of being faster and less manual management of the virutalenv):
+
+```console
+$ uv venv
+$ uv pip install -e .[dev]
+
+# optional, but makes tox faster
+$ uv pip install tox-uv
+
+# run tests
+$ uv run tox
+
+# run zeal-feeds
+$ uv run zeal-feeds
+```
+
+Or you may use `pip`:
+
+```console
+$ python -m venv .venv
+$ source .venv/bin/activate
+(venv) $ pip install -e .[dev]
+
+# run tests
+(venv) $ tox
+
+# run zeal-feeds
+(venv) $ zeal-feeds
+```
 
 ## License
 

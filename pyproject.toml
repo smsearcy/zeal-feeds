@@ -8,30 +8,24 @@ description = "A command line application for adding user contributed docset fee
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
-keywords = [
-  "zeal",
-  "docsets",
-]
-authors = [
-  { name = "Scott Searcy", email = "smsearcy14@outlook.com" },
-]
+keywords = ["zeal", "docsets"]
+authors = [{ name = "Scott Searcy", email = "smsearcy14@outlook.com" }]
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = [
-  "attrs >= 21.1.0",
-  "cattrs",
-  "platformdirs",
-  "requests",
-  "rich",
-]
+dependencies = ["attrs >= 21.1.0", "cattrs", "platformdirs", "requests", "rich"]
 dynamic = ["version"]
+
+[project.optional-dependencies]
+tests = ["pytest", "pytest-cov"]
+typing = ["mypy", "types-requests"]
+dev = ["zeal-feeds[tests,typing]", "pre-commit", "tox>4"]
 
 [project.urls]
 Documentation = "https://github.com/smsearcy/zeal-feeds#readme"
@@ -45,29 +39,16 @@ zeal-feeds = "zeal_feeds.main:main"
 path = "src/zeal_feeds/__about__.py"
 
 [tool.hatch.build.targets.sdist]
-exclude = [
-  "/.github",
-]
+exclude = ["/.github"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/zeal_feeds"]
 
 [tool.hatch.envs.default]
-dependencies = [
-  "mypy",
-  "pre-commit",
-  "pytest",
-  "pytest-cov",
-  "ruff == 0.0.240",
-  "types-requests",
-]
+dependencies = ["mypy", "pre-commit", "ruff == 0.0.240", "types-requests"]
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/zeal_feeds --cov=tests {args}"
-lint = [
-  "pre-commit run --all-files",
-  "ruff src tests",
-  "mypy src tests",
-]
+lint = ["pre-commit run --all-files", "ruff src tests", "mypy src tests"]
 #ruff-fix = "ruff --fix src test"
 no-cov = "cov --no-cov {args}"
 
@@ -77,51 +58,52 @@ python = ["39", "310", "311"]
 [tool.coverage.run]
 branch = true
 parallel = true
-omit = [
-  "src/zeal_feeds/__about__.py",
-]
+source = ["zeal_feeds"]
+
+[tool.coverage.paths]
+source = ["src", ".tox/py*/**/site-packages"]
 
 [tool.coverage.report]
-exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
-]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.ruff]
 select = [
-  # pyflakes
-  "F",
-  # pycodestyle
-  "E", "W",
-  # mccabe
-  "C90",
-  # isort
-  "I",
-  # pep8-naming
-  "N",
-  # pydocstyle
-  "D",
-  # flake8-2020
-  "YTT",
-  # flake8-bugbear"
-  "B",
-  # flake8-builtins
-  "A",
-  # pylint
-  "PLC", "PLE", "PLR", "PLW",
-  # flake8-comprehensions
-  "C4",
-  # flake8-return
-  "RET",
-  # flake8-simplify
-  "SIM",
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # mccabe
+    "C90",
+    # isort
+    "I",
+    # pep8-naming
+    "N",
+    # pydocstyle
+    "D",
+    # flake8-2020
+    "YTT",
+    # flake8-bugbear"
+    "B",
+    # flake8-builtins
+    "A",
+    # pylint
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    # flake8-comprehensions
+    "C4",
+    # flake8-return
+    "RET",
+    # flake8-simplify
+    "SIM",
 ]
 ignore = [
-  "A003",  # builtin-attribute-shadowing
-  "D105",  # magic-method
-  "D107",  # public-init
-  "D203",  # one-blank-line-before-class
-  "D213",  # multi-line-summary-second-line
-  "PLR2004",  # magic-value-comparison
+    "A003",    # builtin-attribute-shadowing
+    "D105",    # magic-method
+    "D107",    # public-init
+    "D203",    # one-blank-line-before-class
+    "D213",    # multi-line-summary-second-line
+    "PLR2004", # magic-value-comparison
 ]
