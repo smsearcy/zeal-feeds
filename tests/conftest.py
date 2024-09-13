@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 """pytest configuration."""
+
 from pathlib import Path
 
 import pytest

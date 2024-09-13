@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 """Functionality related to fetching the user contributed docsets."""
+
 from __future__ import annotations
 
 import json

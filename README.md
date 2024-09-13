@@ -3,8 +3,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/zeal-feeds.svg)](https://pypi.org/project/zeal-feeds)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zeal-feeds.svg)](https://pypi.org/project/zeal-feeds)
 [![GitHub CI](https://github.com/smsearcy/zeal-feeds/actions/workflows/ci.yml/badge.svg)](https://github.com/smsearcy/zeal-feeds/actions)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v1.json)](https://github.com/charliermarsh/ruff)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 -----
 
@@ -15,7 +14,7 @@ as an alternative to looking up the URL of the XML feed and pasting in the *Add 
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Acknowledgements](#acknowledgements)
+- [Acknowledgments](#acknowledgments)
 - [License](#license)
 
 ## Installation
@@ -81,7 +80,7 @@ Downloading attrs ━━━━━━━━━━━━━━━━━━━━�
 
 If a docset is already installed then it will be skipped.
 
-## Acknowledgements
+## Acknowledgments
 
 This project was inspired by [zeal-user-contrib](https://github.com/jmerle/zeal-user-contrib),
 but the apparent lack of an `npm` equivalent of `pipx` for isolated installations prompted writing a Python version
@@ -95,8 +94,23 @@ https://zealusercontributions.vercel.app/ for providing the docset API with XML 
 
 Please open an issue or pull request on GitHub if you have questions, ideas, or issues.
 
-*zeal-feeds* uses [hatch](https://hatch.pypa.io/).
-Run `hatch run lint` to run checks (Black, Ruff, and mypy) and `hatch run test:pytest` to run unit tests.
+For local development,
+[fork and clone](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)
+the Git repository.
+
+You will need [uv](https://github.com/astral-sh/uv) installed.
+[`just`](https://github.com/casey/just) is *recommended* for running local tests,
+but you can copy the commands from `Justfile` and run them by hand.
+
+```console
+$ uv sync
+
+# run zeal-feeds
+$ uv run zeal-feeds
+
+# run test suite
+$ just
+```
 
 ## License
 

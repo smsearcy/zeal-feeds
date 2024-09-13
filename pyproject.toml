@@ -5,33 +5,33 @@ build-backend = "hatchling.build"
 [project]
 name = "zeal-feeds"
 description = "A command line application for adding user contributed docset feeds to Zeal."
+version = "0.4.0.dev0"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
-keywords = [
-  "zeal",
-  "docsets",
-]
-authors = [
-  { name = "Scott Searcy", email = "smsearcy14@outlook.com" },
-]
+keywords = ["zeal", "docsets"]
+authors = [{ name = "Scott Searcy", email = "smsearcy@gmail.com" }]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = [
-  "attrs >= 21.1.0",
-  "cattrs",
-  "platformdirs",
-  "requests",
-  "rich",
+dependencies = ["attrs >= 21.1.0", "cattrs", "platformdirs", "requests", "rich"]
+
+[dependency-groups]
+dev = [
+  "mypy==1.15.*",
+  "pytest==8.3.*",
+  "pytest-cov>=5.0.0",
+  "ruff==0.11.*",
+  "types-requests>=2.32.0.20240907",
 ]
-dynamic = ["version"]
 
 [project.urls]
 Documentation = "https://github.com/smsearcy/zeal-feeds#readme"
@@ -41,59 +41,30 @@ Source = "https://github.com/smsearcy/zeal-feeds"
 [project.scripts]
 zeal-feeds = "zeal_feeds.main:main"
 
-[tool.hatch.version]
-path = "src/zeal_feeds/__about__.py"
-
 [tool.hatch.build.targets.sdist]
-exclude = [
-  "/.github",
-]
+exclude = ["/.github"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/zeal_feeds"]
 
-[tool.hatch.envs.default]
-dependencies = [
-  "mypy",
-  "pre-commit",
-  "pytest",
-  "pytest-cov",
-  "ruff == 0.0.240",
-  "types-requests",
-]
-[tool.hatch.envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/zeal_feeds --cov=tests {args}"
-lint = [
-  "pre-commit run --all-files",
-  "ruff src tests",
-  "mypy src tests",
-]
-#ruff-fix = "ruff --fix src test"
-no-cov = "cov --no-cov {args}"
-
-[[tool.hatch.envs.test.matrix]]
-python = ["39", "310", "311"]
-
 [tool.coverage.run]
 branch = true
 parallel = true
-omit = [
-  "src/zeal_feeds/__about__.py",
-]
+source = ["zeal_feeds"]
+
+[tool.coverage.paths]
+source = ["src", ".tox/py*/**/site-packages"]
 
 [tool.coverage.report]
-exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
-]
+exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
-[tool.ruff]
+[tool.ruff.lint]
 select = [
   # pyflakes
   "F",
   # pycodestyle
-  "E", "W",
+  "E",
+  "W",
   # mccabe
   "C90",
   # isort
@@ -109,7 +80,10 @@ select = [
   # flake8-builtins
   "A",
   # pylint
-  "PLC", "PLE", "PLR", "PLW",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
   # flake8-comprehensions
   "C4",
   # flake8-return
@@ -118,10 +92,10 @@ select = [
   "SIM",
 ]
 ignore = [
-  "A003",  # builtin-attribute-shadowing
-  "D105",  # magic-method
-  "D107",  # public-init
-  "D203",  # one-blank-line-before-class
-  "D213",  # multi-line-summary-second-line
-  "PLR2004",  # magic-value-comparison
+  "A003",    # builtin-attribute-shadowing
+  "D105",    # magic-method
+  "D107",    # public-init
+  "D203",    # one-blank-line-before-class
+  "D213",    # multi-line-summary-second-line
+  "PLR2004", # magic-value-comparison
 ]

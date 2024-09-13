@@ -21,16 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: "3.11"
-
-      - name: Install Hatch
-        run: pip install hatch --disable-pip-version-check
+          version: "0.6.9"
 
       - name: Build package
-        run: hatch build
+        run: uv build
 
       - name: Save package artifacts
         uses: actions/upload-artifact@v4

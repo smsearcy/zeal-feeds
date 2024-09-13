@@ -2,9 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 """Test functionality in the `user_contrib` module."""
+
 import json
 
 import pytest
+
 from zeal_feeds import user_contrib
 
 
