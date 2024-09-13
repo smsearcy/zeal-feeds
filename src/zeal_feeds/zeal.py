@@ -21,6 +21,8 @@ from platformdirs import user_config_path
 from . import ApplicationError
 from .user_contrib import DocSet
 
+FEED_URL = "https://zealusercontributions.vercel.app/api/docsets/{name}.xml"
+
 
 @attrs.define
 class MetaData:
@@ -33,51 +35,57 @@ class MetaData:
     urls: list[str]
 
 
-FEED_URL = "https://zealusercontributions.vercel.app/api/docsets/{name}.xml"
+@attrs.define
+class Zeal:
+    docset_path: Path
 
+    @classmethod
+    def from_config(cls):
+        """Get the path where Docsets are installed to."""
+        if sys.platform == "win32":
+            docset_path = _windows_docset_install_path()
+        else:
+            docset_path = _linux_docset_install_path()
+        if not docset_path.exists():
+            docset_path.mkdir(parents=True)
+        return cls(docset_path)
 
-@functools.cache
-def docset_install_path() -> Path:
-    """Get the path where Docsets are installed to."""
-    if sys.platform == "win32":
-        install_path = _windows_docset_install_path()
-    else:
-        install_path = _linux_docset_install_path()
-    if not install_path.exists():
-        install_path.mkdir(parents=True)
-    return install_path
+    def installed_docsets(self) -> Iterator[str]:
+        """List of locally installed DocSets."""
+        for meta_json in self.docset_path.glob("*/meta.json"):
+            metadata = json.load(meta_json.open("r"))
+            yield metadata["name"]
 
+    def install_docset(self, docset: DocSet, tarball: Path) -> None:
+        """Install a docset into the Zeal data directory."""
+        # TODO: don't install if docset already installed
+        with tarfile.open(tarball) as docset_archive:
+            docset_folder = docset_archive.next()
+            if not (docset_folder and docset_folder.name.endswith(".docset")):
+                raise ApplicationError(f"Unexpected contents for {docset.name} archive")
+            docset_archive.extractall(self.docset_path)
 
-def installed_docsets() -> Iterator[str]:
-    """List of locally installed DocSets."""
-    docset_path = docset_install_path()
+        # ensure docset folder given the correct name
+        expected_folder_name = f"{docset.name}.docset"
+        if docset_folder.name != expected_folder_name:
+            destination = self.docset_path / expected_folder_name
+            if destination.exists():
+                raise ApplicationError(
+                    f"Destination folder already exists: {destination}"
+                )
+            source = self.docset_path / docset_folder.name
+            source.rename(destination)
 
-    for meta_json in docset_path.glob("*/meta.json"):
-        metadata = json.load(meta_json.open("r"))
-        yield metadata["name"]
-
-
-def install(docset: DocSet, tarball: Path):
-    """Install a docset into the Zeal data directory."""
-    # TODO: don't install if docset already installed
-    docset_path = docset_install_path()
-
-    with tarfile.open(tarball) as docset_archive:
-        docset_folder = docset_archive.next()
-        if not (docset_folder and re.match(r"\w+\.docset", docset_folder.name)):
-            raise ApplicationError(f"Unexpected contents for {docset.name} archive")
-        docset_archive.extractall(docset_path)
-
-    converter = Converter()
-    meta_json = docset_path / docset_folder.name / "meta.json"
-    metadata = MetaData(
-        name=docset.name,
-        title=docset.title,
-        version=docset.version,
-        urls=docset.urls,
-        feed_url=FEED_URL.format(name=docset.name),
-    )
-    json.dump(converter.unstructure(metadata), meta_json.open("w"), indent=2)
+        converter = Converter()
+        meta_json = self.docset_path / expected_folder_name / "meta.json"
+        metadata = MetaData(
+            name=docset.name,
+            title=docset.title,
+            version=docset.version,
+            urls=docset.urls,
+            feed_url=FEED_URL.format(name=docset.name),
+        )
+        json.dump(converter.unstructure(metadata), meta_json.open("w"), indent=2)
 
 
 def _linux_docset_install_path() -> Path:

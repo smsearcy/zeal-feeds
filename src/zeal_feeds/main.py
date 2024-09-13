@@ -18,7 +18,8 @@ from rich.live import Live
 from rich.progress import Progress
 from rich.spinner import Spinner
 
-from zeal_feeds import ApplicationError, user_contrib, zeal
+from zeal_feeds import ApplicationError, user_contrib
+from zeal_feeds.zeal import Zeal
 
 
 def main():
@@ -82,6 +83,8 @@ def install(args) -> str | None:
     if missing_docsets:
         return f"Failed to find the following docsets: {', '.join(missing_docsets)}"
 
+    zeal = Zeal.from_config()
+
     installed_docsets = set(zeal.installed_docsets())
     for docset in found_docsets.values():
         if docset is None:
@@ -92,7 +95,7 @@ def install(args) -> str | None:
         archive = _download_archive(docset)
         spinner = Spinner("simpleDots", f"Installing {docset.name}")
         with Live(spinner):
-            zeal.install(docset, archive)
+            zeal.install_docset(docset, archive)
         archive.unlink()
 
     return None
