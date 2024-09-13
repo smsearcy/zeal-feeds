@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 """Entrypoint for `python -m zeal_feeds`."""
+
 import sys
 
 from zeal_feeds import main
