@@ -16,6 +16,13 @@ Categories:
 ### Security
 -->
 
+## Unreleased
+
+### Added
+
+* Recommend *uv* as another preferred method of installation/execution.
+
+
 ## 0.2.3 - 2024-09-13
 
 ### Fixed
