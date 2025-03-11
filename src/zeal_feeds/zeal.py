@@ -20,6 +20,7 @@ from . import ApplicationError
 from .user_contrib import DocSet
 
 FEED_URL = "https://zealusercontributions.vercel.app/api/docsets/{name}.xml"
+FLATPAK_ID = "org.zealdocs.Zeal"
 
 
 @attrs.define
@@ -90,7 +91,10 @@ class Zeal:
 
 def _linux_docset_install_path() -> Path:
     """Get the docset path from the Zeal configuration file."""
-    config_file = user_config_path("Zeal") / "Zeal.conf"
+    config_path = user_config_path("Zeal")
+    if not config_path.exists():
+        config_path = Path(f"~/.var/app/{FLATPAK_ID}/config/Zeal").expanduser()
+    config_file = config_path / "Zeal.conf"
     if not config_file.exists():
         raise ApplicationError("Zeal configuration not found.")
     zeal_config = ConfigParser()
