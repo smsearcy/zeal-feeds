@@ -20,7 +20,6 @@ from . import ApplicationError
 from .user_contrib import DocSet
 
 FEED_URL = "https://zealusercontributions.vercel.app/api/docsets/{name}.xml"
-FLATPAK_ID = "org.zealdocs.Zeal"
 
 
 @attrs.define
@@ -41,8 +40,8 @@ class Zeal:
     docset_path: Path
 
     @classmethod
-    def from_config(cls):
-        """Get the path where Docsets are installed to."""
+    def find_config(cls):
+        """Find the path where Docsets are installed to."""
         if sys.platform == "win32":
             docset_path = _windows_docset_install_path()
         else:
@@ -91,12 +90,21 @@ class Zeal:
 
 def _linux_docset_install_path() -> Path:
     """Get the docset path from the Zeal configuration file."""
-    config_path = user_config_path("Zeal")
-    if not config_path.exists():
-        config_path = Path(f"~/.var/app/{FLATPAK_ID}/config/Zeal").expanduser()
+    # Try typical XDG `~/.config` first, look for Flatpak as fallback
+    # (but the Fedora Flatpak registry uses a different case than Flathub)
+    config_paths = (
+        user_config_path("Zeal"),
+        Path("~/.var/app/org.zealdocs.Zeal/config/Zeal").expanduser(),
+        Path("~/.var/app/org.zealdocs.zeal/config/Zeal").expanduser(),
+    )
+    for config_path in config_paths:
+        if config_path.exists():
+            break
+    else:
+        raise ApplicationError("Zeal configuration folder not found.")
     config_file = config_path / "Zeal.conf"
     if not config_file.exists():
-        raise ApplicationError("Zeal configuration not found.")
+        raise ApplicationError("Zeal configuration file not found.")
     zeal_config = ConfigParser()
     zeal_config.read_file(config_file.open())
 

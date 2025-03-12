@@ -6,6 +6,7 @@
 This module handles modules parsing and end-user interaction.
 
 """
+
 from __future__ import annotations
 
 import argparse
@@ -83,7 +84,7 @@ def install(args) -> str | None:
     if missing_docsets:
         return f"Failed to find the following docsets: {', '.join(missing_docsets)}"
 
-    zeal = Zeal.from_config()
+    zeal = Zeal.find_config()
 
     installed_docsets = set(zeal.installed_docsets())
     for docset in found_docsets.values():
