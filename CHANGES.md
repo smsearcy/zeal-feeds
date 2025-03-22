@@ -16,7 +16,7 @@ Categories:
 ### Security
 -->
 
-## Unreleased
+## 0.3.0 - 2025-03-21
 
 ### Added
 
