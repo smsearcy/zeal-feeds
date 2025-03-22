@@ -6,6 +6,7 @@
 This module handles modules parsing and end-user interaction.
 
 """
+
 from __future__ import annotations
 
 import argparse
@@ -14,11 +15,10 @@ from pathlib import Path
 
 import requests
 from platformdirs import user_runtime_path
-from rich.live import Live
 from rich.progress import Progress
-from rich.spinner import Spinner
 
 from zeal_feeds import ApplicationError, user_contrib
+from zeal_feeds.console import console
 from zeal_feeds.zeal import Zeal
 
 
@@ -32,6 +32,12 @@ def main():
     install_parser = subparsers.add_parser("install", help="install docsets")
     install_parser.add_argument("docset", metavar="DOCSET", nargs="+")
     install_parser.add_argument("--url", default=user_contrib.USER_DOCSET_API)
+    install_parser.add_argument("--config", help="Specify path to Zeal.conf file")
+    install_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Downloads the docsets but does not install",
+    )
     install_parser.set_defaults(func=install)
 
     search_parser = subparsers.add_parser("search", help="search available docsets")
@@ -65,16 +71,18 @@ def search(args) -> str | None:
         return "No matching docsets found"
 
     if fallback:
-        print("No exact matches, did you mean:")
+        console.print("No exact matches, did you mean:")
     else:
-        print("Matching docsets:")
+        console.print("Matching docsets:")
     for docset in matches:
-        print(docset)
+        console.print(docset.name)
     return None
 
 
 def install(args) -> str | None:
     """Install the specified DocSets."""
+    zeal = Zeal.load_config(args.config) if args.config else Zeal.find_config()
+
     docset_data = _load_docset_index(args.url)
 
     docset_names = args.docset
@@ -83,19 +91,20 @@ def install(args) -> str | None:
     if missing_docsets:
         return f"Failed to find the following docsets: {', '.join(missing_docsets)}"
 
-    zeal = Zeal.from_config()
-
     installed_docsets = set(zeal.installed_docsets())
     for docset in found_docsets.values():
         if docset is None:
             continue
         if docset.name in installed_docsets:
-            print(f"Skipping {docset.name}, already installed")
+            console.print(f"Skipping {docset.name!r}, already installed")
             continue
         archive = _download_archive(docset)
-        spinner = Spinner("simpleDots", f"Installing {docset.name}")
-        with Live(spinner):
-            zeal.install_docset(docset, archive)
+        if args.dry_run:
+            console.print(f"Skipping {docset.name!r} due to --dry-run")
+        else:
+            with console.status(f"Installing {docset.name}"):
+                zeal.install_docset(docset, archive)
+
         archive.unlink()
 
     return None
@@ -105,10 +114,9 @@ def _load_docset_index(url: str) -> user_contrib.DocSetCollection:
     """Load the docset index, with a spinner."""
     if docsets := user_contrib.load_cached_index():
         # should I use Rich for "normal" output?
-        print("Using cached index of user contributed docsets")
+        console.print("Using cached index of user contributed docsets")
         return docsets
-    spinner = Spinner("dots", "Loading index of user contributed docsets")
-    with Live(spinner):
+    with console.status("Loading index of user contributed docsets"):
         return user_contrib.user_contrib_index(url)
 
 
