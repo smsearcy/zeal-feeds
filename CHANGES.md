@@ -21,6 +21,11 @@ Categories:
 ### Added
 
 * Recommend *uv* as another preferred method of installation/execution.
+* Add `--config` option to specify `Zeal.conf` configuration file.
+
+### Fixed
+
+* Failure to find configuration folder for Flatpak. [#9](https://github.com/smsearcy/zeal-feeds/issues/9)
 
 
 ## 0.2.3 - 2024-09-13
