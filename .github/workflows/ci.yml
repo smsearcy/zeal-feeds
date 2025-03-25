@@ -4,7 +4,6 @@ on: [push]
 
 env:
   FORCE_COLOR: "1"
-  UV_VERSION: "0.6.9"
 
 jobs:
   pre-commit:
@@ -16,7 +15,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@5
         with:
-          version: $UV_VERSION
+          version: "0.6.9"
 
       - name: Run pre-commit
         run: uvx pre-commit run --all-files
@@ -30,7 +29,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@5
         with:
-          version: $UV_VERSION
+          version: "0.6.9"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -55,7 +54,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@5
         with:
-          version: $UV_VERSION
+          version: "0.6.9"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -83,7 +82,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@5
         with:
-          version: $UV_VERSION
+          version: "0.6.9"
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
