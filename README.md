@@ -3,6 +3,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/zeal-feeds.svg)](https://pypi.org/project/zeal-feeds)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zeal-feeds.svg)](https://pypi.org/project/zeal-feeds)
 [![GitHub CI](https://github.com/smsearcy/zeal-feeds/actions/workflows/ci.yml/badge.svg)](https://github.com/smsearcy/zeal-feeds/actions)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 -----
