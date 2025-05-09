@@ -1,7 +1,6 @@
-# SPDX-FileCopyrightText: 2023-present Scott Searcy <smsearcy14@outlook.com>
-#
-# SPDX-License-Identifier: MIT
 """Manage feeds for user contributed docsets in Zeal."""
+
+from __future__ import annotations
 
 # should this be loaded from project metadata?
 APP_NAME = "zeal-feeds"

@@ -87,3 +87,6 @@ ignore = [
   "D213",    # multi-line-summary-second-line
   "PLR2004", # magic-value-comparison
 ]
+
+[tool.ruff.lint.isort]
+required-imports = ["from __future__ import annotations"]

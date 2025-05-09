@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2023-present Scott Searcy <smsearcy14@outlook.com>
-#
-# SPDX-License-Identifier: MIT
 """Command line entry point for `zeal-feeds`.
 
 This module handles modules parsing and end-user interaction.

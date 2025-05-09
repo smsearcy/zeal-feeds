@@ -1,6 +1,3 @@
-# SPDX-FileCopyrightText: 2023-present Scott Searcy <smsearcy14@outlook.com>
-#
-# SPDX-License-Identifier: MIT
 """Functionality related to fetching the user contributed docsets."""
 
 from __future__ import annotations

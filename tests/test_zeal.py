@@ -1,5 +1,7 @@
 """Test functionality in the `zeal` module."""
 
+from __future__ import annotations
+
 from zeal_feeds.user_contrib import DocSet, DocSetAuthor
 from zeal_feeds.zeal import Zeal
 
