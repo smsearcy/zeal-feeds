@@ -13,7 +13,7 @@ check:
   uv run ruff check .
 
 # Ruff: format and lint (with fixes)
-fix: fmt
+fix: && fmt
   uv run ruff check . --fix
 
 # Check types with mypy

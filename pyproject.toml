@@ -60,36 +60,24 @@ exclude_lines = ["no cov", "if __name__ == .__main__.:", "if TYPE_CHECKING:"]
 
 [tool.ruff.lint]
 select = [
-  # pyflakes
-  "F",
-  # pycodestyle
-  "E",
-  "W",
-  # mccabe
-  "C90",
-  # isort
-  "I",
-  # pep8-naming
-  "N",
-  # pydocstyle
-  "D",
-  # flake8-2020
-  "YTT",
-  # flake8-bugbear"
-  "B",
-  # flake8-builtins
-  "A",
-  # pylint
-  "PLC",
-  "PLE",
-  "PLR",
-  "PLW",
-  # flake8-comprehensions
-  "C4",
-  # flake8-return
-  "RET",
-  # flake8-simplify
-  "SIM",
+  "A",   # flake8-builtins
+  "B",   # flake8-bugbear"
+  "C4",  # flake8-comprehensions
+  "C90", # mccabe
+  "D",   # pydocstyle
+  "E",   # pycodestyle (error)
+  "F",   # pyflakes
+  "I",   # isort
+  "N",   # pep8-naming
+  "PLC", # pylint (convention)
+  "PLE", # pylint (error)
+  "PLR", # pylint (refactor)
+  "PLW", # pylint (warning)
+  "RET", # flake8-return
+  "RUF",
+  "SIM", # flake8-simplify
+  "W",   # pycodestyle (warning)
+  "YTT", # flake8-2020
 ]
 ignore = [
   "A003",    # builtin-attribute-shadowing
